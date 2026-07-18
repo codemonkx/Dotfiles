@@ -156,6 +156,9 @@ for dir in hypr kitty waybar rofi swaync neofetch Wallpaper cava; do
     link_config "$SCRIPT_DIR/.config/$dir" "$CONFIG_DIR/$dir"
 done
 
+# Link assets directory (contains PFP and showcase media)
+link_config "$SCRIPT_DIR/assets" "$HOME/assets"
+
 # Link VSCodium settings
 link_config "$SCRIPT_DIR/.config/VSCodium/User/settings.json" "$CONFIG_DIR/VSCodium/User/settings.json"
 link_config "$SCRIPT_DIR/.config/VSCodium/User/keybindings.json" "$CONFIG_DIR/VSCodium/User/keybindings.json"
