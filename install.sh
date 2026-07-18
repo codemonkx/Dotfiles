@@ -4,6 +4,9 @@
 
 set -e
 
+# Resolve script root directory
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 echo "=== Midnight Obsidian Installation Script ==="
 echo "This script will install all required packages and set up your configuration files."
 
@@ -82,19 +85,18 @@ if ! command -v yay &> /dev/null; then
     git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
     cd /tmp/yay-bin && makepkg -si --noconfirm
     rm -rf /tmp/yay-bin
-    # Go back to script directory
-    cd - >/dev/null
+    cd "$SCRIPT_DIR"
 fi
 
 # 3. Install AUR Packages
 echo "Installing AUR packages..."
 yay -S --noconfirm zen-browser-bin vscodium-bin mission-center hyprmod
 
-# 4. Configure Graphics Drivers (NVIDIA/iGPU)
+# 4. Configure Graphics Drivers (NVIDIA Auto-Detection)
 echo ""
-echo "=== Graphics Driver Selection ==="
-read -p "Do you want to install NVIDIA graphics drivers for this machine? (y/N): " install_nvidia
-if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
+echo "=== Graphics Driver Auto-Detection ==="
+if lspci | grep -qi nvidia; then
+    echo "NVIDIA Graphics Card detected!"
     echo "Installing NVIDIA drivers and Wayland compatibility layers..."
     sudo pacman -S --needed --noconfirm linux-headers nvidia-dkms nvidia-utils lib32-nvidia-utils egl-wayland
 
@@ -103,8 +105,8 @@ if [[ "$install_nvidia" =~ ^[Yy]$ ]]; then
     echo "options nvidia_drm modeset=1" | sudo tee /etc/modprobe.d/nvidia.conf
 
     echo "Creating custom NVIDIA environment configuration for Hyprland..."
-    mkdir -p "hypr/configs"
-    cat <<EOF > "hypr/configs/nvidia.lua"
+    mkdir -p "$SCRIPT_DIR/.config/hypr/configs"
+    cat <<EOF > "$SCRIPT_DIR/.config/hypr/configs/nvidia.lua"
 -- Custom NVIDIA Configuration
 -- Loaded only on dGPU systems to protect hardware acceleration on other systems
 
@@ -113,26 +115,56 @@ hl.env("GBM_BACKEND", "nvidia-drm")
 hl.env("__GLX_VENDOR_LIBRARY_NAME", "nvidia")
 EOF
 else
-    echo "Skipping NVIDIA driver setup (Intel/AMD iGPU mode)."
-    # Clean up local file if it exists in the workspace
-    if [ -f "hypr/configs/nvidia.lua" ]; then
-        rm -f "hypr/configs/nvidia.lua"
+    echo "No NVIDIA GPU detected (Intel/AMD mode). Skipping NVIDIA driver setup."
+    # Clean up file if it exists
+    if [ -f "$SCRIPT_DIR/.config/hypr/configs/nvidia.lua" ]; then
+        rm -f "$SCRIPT_DIR/.config/hypr/configs/nvidia.lua"
     fi
 fi
 
-# 5. Setup Configuration Directories
+# 5. Setup Configuration Directories (Symbolic Links + Safety Backups)
 echo "Setting up configuration files..."
 CONFIG_DIR="$HOME/.config"
 mkdir -p "$CONFIG_DIR"
 
-# Copy directories to ~/.config
-for dir in hypr kitty waybar rofi swaync neofetch Wallpaper cava sddm; do
-    if [ -d ".config/$dir" ]; then
-        echo "Copying .config/$dir to $CONFIG_DIR..."
-        rm -rf "$CONFIG_DIR/$dir"
-        cp -r ".config/$dir" "$CONFIG_DIR/"
+# Helper function to create symlinks with backups
+link_config() {
+    local source_path="$1"
+    local dest_path="$2"
+
+    if [ -e "$source_path" ]; then
+        # If destination exists and is not a symlink, back it up
+        if [ -e "$dest_path" ] && [ ! -L "$dest_path" ]; then
+            echo "Backing up existing config: $dest_path -> ${dest_path}.bak"
+            mv "$dest_path" "${dest_path}.bak"
+        fi
+        
+        # Remove any existing symlink or file
+        rm -f "$dest_path"
+        
+        # Create parent directory if needed
+        mkdir -p "$(dirname "$dest_path")"
+        
+        # Create symbolic link
+        echo "Linking: $source_path -> $dest_path"
+        ln -sf "$source_path" "$dest_path"
     fi
+}
+
+# Link config directories
+for dir in hypr kitty waybar rofi swaync neofetch Wallpaper cava; do
+    link_config "$SCRIPT_DIR/.config/$dir" "$CONFIG_DIR/$dir"
 done
+
+# Link VSCodium settings
+link_config "$SCRIPT_DIR/.config/VSCodium/User/settings.json" "$CONFIG_DIR/VSCodium/User/settings.json"
+link_config "$SCRIPT_DIR/.config/VSCodium/User/keybindings.json" "$CONFIG_DIR/VSCodium/User/keybindings.json"
+
+# Link global files
+link_config "$SCRIPT_DIR/.zshrc" "$HOME/.zshrc"
+link_config "$SCRIPT_DIR/.bashrc" "$HOME/.bashrc"
+link_config "$SCRIPT_DIR/.config/starship.toml" "$CONFIG_DIR/starship.toml"
+link_config "$SCRIPT_DIR/.config/mimeapps.list" "$CONFIG_DIR/mimeapps.list"
 
 # Ensure powermenu script is executable
 if [ -f "$CONFIG_DIR/rofi/powermenu/type-4/powermenu.sh" ]; then
@@ -144,42 +176,24 @@ if [ -f "$CONFIG_DIR/hypr/scripts/wallpaper.sh" ]; then
     chmod +x "$CONFIG_DIR/hypr/scripts/wallpaper.sh"
 fi
 
-# Copy .zshrc if it exists in the repo
-if [ -f ".zshrc" ]; then
-    echo "Copying Zsh configuration..."
-    cp .zshrc "$HOME/.zshrc"
-fi
-
-# Copy .bashrc if it exists in the repo
-if [ -f ".bashrc" ]; then
-    echo "Copying Bash configuration..."
-    cp .bashrc "$HOME/.bashrc"
-fi
-
-# Copy starship.toml if it exists in the repo
-if [ -f ".config/starship.toml" ]; then
-    echo "Copying Starship prompt configuration..."
-    cp .config/starship.toml "$CONFIG_DIR/starship.toml"
-fi
-
-# Copy mimeapps.list if it exists in the repo
-if [ -f ".config/mimeapps.list" ]; then
-    echo "Copying default apps associations..."
-    cp .config/mimeapps.list "$CONFIG_DIR/mimeapps.list"
-fi
-
-# 6. Configure SDDM Theme (Windows 7 from qylock)
+# 6. Configure SDDM Theme (Windows 7 Theme)
 echo "Configuring SDDM Theme..."
 sudo mkdir -p /etc/sddm.conf.d
 sudo mkdir -p /usr/share/sddm/themes
 
 # Copy the bundled Windows 7 theme
-if [ -d "$CONFIG_DIR/sddm/windows_7" ]; then
+if [ -d "$SCRIPT_DIR/.config/sddm/windows_7" ]; then
     echo "Installing Windows 7 SDDM theme..."
-    sudo cp -r "$CONFIG_DIR/sddm/windows_7" /usr/share/sddm/themes/
+    sudo cp -r "$SCRIPT_DIR/.config/sddm/windows_7" /usr/share/sddm/themes/
 fi
 
 echo -e "[Theme]\nCurrent=windows_7" | sudo tee /etc/sddm.conf.d/theme.conf
+
+# Set default application associations
+echo "Configuring default applications..."
+xdg-mime default mpv.desktop video/mp4 video/x-matroska video/webm video/avi video/quicktime
+xdg-mime default imv.desktop image/jpeg image/png image/gif image/webp image/bmp image/svg+xml
+xdg-mime default org.gnome.Evince.desktop application/pdf
 
 # 7. Enable Essential System Services
 echo "Enabling system services..."

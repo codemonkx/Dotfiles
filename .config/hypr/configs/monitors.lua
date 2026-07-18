@@ -8,3 +8,11 @@ hl.monitor({
     position = "auto",
     scale    = 1,
 })
+
+-- Fallback rule for any other detected monitor
+hl.monitor({
+    output   = "",
+    mode     = "preferred",
+    position = "auto",
+    scale    = 1,
+})
