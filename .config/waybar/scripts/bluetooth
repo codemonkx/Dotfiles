@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# Rofi-based Bluetooth manager for Waybar
+
+# Check if bluetooth is powered on
+power_state=$(bluetoothctl show | awk '/Powered/ {print $2}')
+
+if [ "$power_state" = "no" ]; then
+    options="󰂯  Turn Bluetooth On"
+else
+    options="󰂲  Turn Bluetooth Off\n󰑐  Scan & Refresh"
+    
+    # Get list of devices (Paired and Connected)
+    devices=$(bluetoothctl devices)
+    
+    while read -r line; do
+        if [ -z "$line" ]; then continue; fi
+        mac=$(echo "$line" | cut -d' ' -f2)
+        name=$(echo "$line" | cut -d' ' -f3-)
+        
+        # Check connection status
+        info=$(bluetoothctl info "$mac" 2>/dev/null)
+        connected=$(echo "$info" | awk '/Connected:/ {print $2}')
+        paired=$(echo "$info" | awk '/Paired:/ {print $2}')
+        
+        if [ "$connected" = "yes" ]; then
+            options="$options\n󰂱  $name  (Connected)  [$mac]"
+        elif [ "$paired" = "yes" ]; then
+            options="$options\n󰂰  $name  (Paired)  [$mac]"
+        else
+            options="$options\n󰂯  $name  [$mac]"
+        fi
+    done <<< "$devices"
+fi
+
+# Run Rofi
+chosen=$(echo -e "$options" | rofi -dmenu -i -p "Bluetooth" -theme-str 'window {width: 450px;}')
+
+if [ -z "$chosen" ]; then
+    exit 0
+fi
+
+if [[ "$chosen" == *"Turn Bluetooth On"* ]]; then
+    bluetoothctl power on
+    notify-send "Bluetooth" "Bluetooth powered on" -i "bluetooth-active"
+elif [[ "$chosen" == *"Turn Bluetooth Off"* ]]; then
+    bluetoothctl power off
+    notify-send "Bluetooth" "Bluetooth powered off" -i "bluetooth-disabled"
+elif [[ "$chosen" == *"Scan & Refresh"* ]]; then
+    notify-send "Bluetooth" "Scanning for devices..." -i "bluetooth"
+    bluetoothctl scan on &
+    scan_pid=$!
+    sleep 4
+    kill $scan_pid &>/dev/null
+    exec "$0"
+else
+    # Extract MAC address from [MAC] at the end of the line
+    mac=$(echo "$chosen" | grep -o '\[.*\]' | tr -d '[]')
+    name=$(echo "$chosen" | sed -E 's/^󰂱  |󰂰  |󰂯  //' | sed -E 's/  \(Connected\)  \[.*\]|  \(Paired\)  \[.*\]|  \[.*\]//')
+    
+    if [ -z "$mac" ]; then
+        exit 0
+    fi
+    
+    # Check current status
+    if [[ "$chosen" == *"Connected"* ]]; then
+        notify-send "Bluetooth" "Disconnecting from $name..." -i "bluetooth"
+        if bluetoothctl disconnect "$mac"; then
+            notify-send "Bluetooth" "Disconnected from $name" -i "bluetooth-disabled"
+        else
+            notify-send "Bluetooth" "Failed to disconnect" -i "dialog-warning"
+        fi
+    else
+        notify-send "Bluetooth" "Connecting to $name..." -i "bluetooth"
+        # If not paired, pair first
+        if [[ "$chosen" == *"Paired"* ]]; then
+            if bluetoothctl connect "$mac"; then
+                notify-send "Bluetooth" "Connected to $name" -i "bluetooth-active"
+            else
+                notify-send "Bluetooth" "Failed to connect" -i "dialog-warning"
+            fi
+        else
+            # Try to pair, trust and connect
+            if bluetoothctl pair "$mac" && bluetoothctl trust "$mac" && bluetoothctl connect "$mac"; then
+                notify-send "Bluetooth" "Connected to $name" -i "bluetooth-active"
+            else
+                notify-send "Bluetooth" "Failed to connect/pair" -i "dialog-warning"
+            fi
+        fi
+    fi
+fi

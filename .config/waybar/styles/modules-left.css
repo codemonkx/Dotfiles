@@ -1,0 +1,73 @@
+/*-----------------------------------------------------
+    Left Pills: Clock, Stats, CAVA Visualizer
+-----------------------------------------------------*/
+
+#clock-pill,
+#stats-pill,
+#custom-cava {
+	background-color: @main-bg;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 20px;
+	padding: 2px 10px;
+	margin: 4px 6px;
+
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/*-----------------
+    Distro & Clock
+-----------------*/
+
+#custom-distro {
+	color: @accent;
+	padding: 0 8px 0 4px;
+}
+
+#clock.time {
+	color: @text;
+	padding: 0 8px;
+}
+
+#clock.date {
+	color: @subtext1;
+	padding: 0 8px 0 4px;
+}
+
+/*-----------------
+    System Stats
+-----------------*/
+
+#cpu {
+	color: @green;
+	padding: 0 8px;
+}
+
+#memory {
+	color: @peach;
+	padding: 0 8px;
+}
+
+#temperature {
+	color: @maroon;
+	padding: 0 8px;
+}
+
+/*------------------
+    Cava Visualizer
+------------------*/
+
+#custom-cava {
+	background-color: @main-bg;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 20px;
+	padding: 2px 15px;
+	margin: 4px 6px;
+
+	color: @accent;
+	text-shadow: 0 0 6px @accent; /* Premium neon glow effect for the bars */
+	font-family: "JetBrainsMono Nerd Font", monospace;
+	font-size: 15px;
+	letter-spacing: -2px; /* Pulls visualizer bars closer for a gapless wave look */
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

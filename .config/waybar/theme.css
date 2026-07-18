@@ -1,0 +1,42 @@
+/* Dynamically generated color palette */
+
+@define-color accent #2900d8;
+@define-color base #111114;
+@define-color mantle #0d0d0f;
+@define-color crust #09090a;
+@define-color surface0 #1d1c23;
+@define-color surface1 #292733;
+@define-color surface2 #353242;
+@define-color text #e1deea;
+@define-color subtext0 #bebbcc;
+@define-color subtext1 #a4a0b2;
+@define-color overlay0 #646172;
+@define-color red #d80000;
+@define-color peach #e06b00;
+@define-color yellow #e0c900;
+@define-color green #04d100;
+@define-color teal #00d192;
+@define-color sky #0097d8;
+@define-color blue #003cd8;
+@define-color lavender #1100d8;
+@define-color mauve #8e00d1;
+@define-color pink #d80082;
+@define-color rosewater #e07091;
+
+/* Semantic mappings */
+@define-color main-br @surface0;
+@define-color main-bg rgba(9, 9, 10, 0.60);
+@define-color main-fg @text;
+@define-color hover-bg rgba(17, 17, 20, 0.60);
+@define-color hover-fg alpha(@main-fg, 0.75);
+@define-color outline shade(@main-bg, 0.5);
+@define-color workspaces rgba(13, 13, 15, 0.60);
+@define-color temperature rgba(13, 13, 15, 0.60);
+@define-color memory rgba(17, 17, 20, 0.60);
+@define-color cpu rgba(29, 28, 35, 0.60);
+@define-color time rgba(29, 28, 35, 0.60);
+@define-color date rgba(17, 17, 20, 0.60);
+@define-color tray rgba(13, 13, 15, 0.60);
+@define-color volume rgba(13, 13, 15, 0.60);
+@define-color backlight rgba(17, 17, 20, 0.60);
+@define-color battery rgba(29, 28, 35, 0.60);

@@ -1,0 +1,29 @@
+# Ignore everything by default in the home folder
+/*
+.*
+
+# Whitelist global dotfiles in home directory
+!.gitignore
+!.zshrc
+!.bashrc
+
+# Whitelist .config directory structure
+!.config/
+.config/*
+
+# Whitelist specific config subdirectories and files recursively
+!.config/hypr/
+!.config/hypr/**
+!.config/swaync/
+!.config/swaync/**
+!.config/waybar/
+!.config/waybar/**
+!.config/kitty/
+!.config/kitty/**
+!.config/rofi/
+!.config/rofi/**
+!.config/cava/
+!.config/cava/**
+!.config/starship.toml
+!.config/mimeapps.list
+!.config/zshrc

@@ -1,0 +1,80 @@
+# Midnight Obsidian Hyprlock Configuration
+# Minimal lock screen layout with blurred desktop background
+
+general {
+    hide_cursor = true
+    grace = 0
+    disable_loading_bar = true
+}
+
+background {
+    monitor =
+    color = rgba(10, 14, 20, 1.0)      # Solid Obsidian background (no screenshot -> menu never captured)
+    blur_passes = 3
+    blur_size = 8
+    noise = 0.0117
+    contrast = 0.8916
+    brightness = 0.8172
+    vibrancy = 0.1696
+    vibrancy_darkness = 0.0
+}
+
+# Hours Clock
+label {
+    monitor =
+    text = cmd[update:1000] echo "$(date +'%H')"
+    color = rgb(0, 245, 198)         # Obsidian Teal active accent
+    font_size = 120
+    font_family = Geist Sans ExtraBold, Inter ExtraBold, sans-serif
+    position = 0, 220
+    halign = center
+    valign = center
+}
+
+# Minutes Clock
+label {
+    monitor =
+    text = cmd[update:1000] echo "$(date +'%M')"
+    color = rgb(226, 232, 240)         # Primary foreground white
+    font_size = 120
+    font_family = Geist Sans ExtraBold, Inter ExtraBold, sans-serif
+    position = 0, 100
+    halign = center
+    valign = center
+}
+
+# Date Label
+label {
+    monitor =
+    text = cmd[update:1000] echo "$(date +'%A, %d %B')"
+    color = rgb(79, 118, 253)          # Accent Sapphire Blue
+    font_size = 18
+    font_family = Geist Sans Bold, Inter Bold, sans-serif
+    position = 0, 10
+    halign = center
+    valign = center
+}
+
+# Password Input Field
+input-field {
+    monitor =
+    size = 280, 50
+    outline_thickness = 2
+    dots_size = 0.25                   # Smaller dot password indicators
+    dots_spacing = 0.35                # spacing between dots
+    dots_center = true
+    outer_color = rgba(0, 245, 198, 0.8) # Teal active outline
+    inner_color = rgba(10, 14, 20, 0.75) # Translucent surface background
+    font_color = rgb(226, 232, 240)
+    fade_on_empty = false
+    rounding = -1                      # Fully rounded outline border
+    placeholder_text = <span foreground="##718096">Enter Password...</span>
+    hide_input = false
+    position = 0, -90
+    halign = center
+    valign = center
+    fail_color = rgb(255, 92, 92)      # Red on auth failure
+    fail_text = <i>$FAIL <b>($ATTEMPTS)</b></i>
+    fail_transition = 300
+}
+

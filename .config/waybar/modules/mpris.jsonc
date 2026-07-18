@@ -1,0 +1,10 @@
+{
+	"custom/media": {
+		"exec": "~/.config/waybar/scripts/media_source.sh",
+		"return-type": "json",
+		"interval": 2,
+		"format": "{}",
+		"on-click": "playerctl play-pause",
+		"on-double-click": "bash ~/.config/waybar/scripts/media_workspace.sh"
+	}
+}

@@ -1,0 +1,104 @@
+// Custom workspaces — clicks use the Lua dispatch form that works in this Hyprland.
+// Updated to support up to 10 workspaces. Workspaces > 5 will show/hide dynamically.
+{
+	"custom/ws1": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 1",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 1 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws2": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 2",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 2 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws3": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 3",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 3 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws4": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 4",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 4 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws5": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 5",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 5 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws6": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 6",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 6 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws7": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 7",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 7 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws8": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 8",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws9": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 9",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 9 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	},
+	"custom/ws10": {
+		"interval": "once",
+		"signal": 8,
+		"exec": "~/.config/waybar/scripts/ws.sh 10",
+		"on-click": "hyprctl dispatch 'hl.dsp.focus({ workspace = 10 })'",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"tooltip": false,
+		"escape": false
+	}
+}

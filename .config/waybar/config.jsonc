@@ -1,0 +1,134 @@
+{
+	"include": [
+		"~/.config/waybar/modules/*.jsonc",
+		"~/.config/waybar/modules/custom/*.jsonc",
+		"~/.config/waybar/modules/hyprland/*.jsonc"
+	],
+
+	/*------------
+	    Layout
+	------------*/
+
+	"modules-left": [
+		"group/clock-pill",
+		"group/stats-pill",
+		"custom/cava"
+	],
+	"modules-center": [
+		"group/workspaces-pill"
+	],
+	"modules-right": [
+		"custom/media",
+		"group/status-pill",
+		"group/hardware-pill",
+		"group/power-pill"
+	],
+
+	/*-------------
+	    Group Definitions
+	-------------*/
+
+	"group/workspaces-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"custom/ws1",
+			"custom/ws2",
+			"custom/ws3",
+			"custom/ws4",
+			"custom/ws5",
+			"custom/ws6",
+			"custom/ws7",
+			"custom/ws8",
+			"custom/ws9",
+			"custom/ws10"
+		]
+	},
+
+	"group/window-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"hyprland/window"
+		]
+	},
+
+	"group/clock-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"custom/distro",
+			"clock#time",
+			"clock#date"
+		]
+	},
+
+	"group/stats-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"cpu",
+			"memory",
+			"temperature"
+		]
+	},
+
+	"group/status-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"custom/wallpaper",
+			"network",
+			"bluetooth",
+			"custom/update"
+		]
+	},
+
+	"group/hardware-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"group/pulseaudio",
+			"backlight"
+		]
+	},
+
+	"group/power-pill": {
+		"orientation": "horizontal",
+		"modules": [
+			"battery",
+			"custom/power"
+		]
+	},
+
+	"custom/current-workspace": {
+		"interval": 1,
+		"exec": "~/.config/waybar/scripts/current_ws.sh",
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r+1\" })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"r-1\" })'",
+		"escape": false
+	},
+
+	"custom/wallpaper": {
+		"format": "󰸉",
+		"on-click": "bash ~/.config/hypr/scripts/wallpaper.sh --select",
+		"tooltip": false
+	},
+
+	"custom/cava": {
+		"exec": "~/.config/waybar/scripts/waybar-cava.sh",
+		"format": "{}",
+		"return-type": "plain",
+		"tooltip": false
+	},
+
+	/*-------------
+	    Options
+	-------------*/
+
+	"layer": "top",
+	"position": "top",
+	"height": 38,
+	"margin-top": 8,
+	"margin-left": 12,
+	"margin-right": 12,
+	"margin-bottom": 0,
+	"spacing": 0,
+	"mode": "dock",
+	"tooltip": false,
+	"reload_style_on_change": true
+}

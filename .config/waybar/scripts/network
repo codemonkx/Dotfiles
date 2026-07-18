@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Rofi-based network manager for Waybar
+
+# Get Wi-Fi status
+wifi_state=$(nmcli radio wifi)
+
+if [ "$wifi_state" = "disabled" ]; then
+    options="󰤨  Turn On Wi-Fi"
+else
+    options="󰤯  Turn Off Wi-Fi\n󰑐  Rescan Networks"
+    
+    # Rescan wifi
+    nmcli device wifi rescan &>/dev/null
+    
+    # Get and deduplicate Wi-Fi list first
+    raw_list=$(nmcli -t -f "ACTIVE,SSID,SIGNAL,SECURITY" device wifi list)
+    dedup_list=$(echo "$raw_list" | awk -F: '!seen[$2]++')
+    
+    wifi_list=$(echo "$dedup_list" | awk -F: '
+    {
+        if ($2 == "") next;
+        
+        # Determine security icon
+        sec_icon = ($4 != "") ? "󰌾" : " ";
+        
+        # Determine signal icon
+        sig = $3 + 0;
+        if (sig >= 80) sig_icon = "󰤨";
+        else if (sig >= 60) sig_icon = "󰤥";
+        else if (sig >= 40) sig_icon = "󰤢";
+        else if (sig >= 20) sig_icon = "󰤟";
+        else sig_icon = "󰤯";
+        
+        # Mark active network
+        active = ($1 == "*") ? "●" : " ";
+        
+        # Format string: active, sig_icon, sec_icon, SSID, signal%
+        printf "%s %s %s  %s (%d%%)\n", active, sig_icon, sec_icon, $2, sig
+    }')
+    
+    options="$options\n$wifi_list"
+fi
+
+# Run Rofi
+chosen=$(echo -e "$options" | rofi -dmenu -i -p "Wi-Fi" -theme-str 'window {width: 400px;}')
+
+# Process choice
+if [ -z "$chosen" ]; then
+    exit 0
+fi
+
+if [[ "$chosen" == *"Turn On Wi-Fi"* ]]; then
+    nmcli radio wifi on
+    notify-send "Wi-Fi" "Wi-Fi turned on" -i "network-wireless"
+elif [[ "$chosen" == *"Turn Off Wi-Fi"* ]]; then
+    nmcli radio wifi off
+    notify-send "Wi-Fi" "Wi-Fi turned off" -i "network-wireless-disconnected"
+elif [[ "$chosen" == *"Rescan Networks"* ]]; then
+    notify-send "Wi-Fi" "Scanning for networks..." -i "network-wireless"
+    exec "$0"
+else
+    # Extract SSID by removing the 7-character prefix and trailing signal percentage
+    line=$(echo "$chosen" | sed -E 's/^. . .  //')
+    ssid=$(echo "$line" | sed -E 's/ \([0-9]+%\)$//')
+    
+    if [ -z "$ssid" ]; then
+        exit 0
+    fi
+    
+    # Check if network is already active
+    if [[ "$chosen" == "● "* ]]; then
+        notify-send "Wi-Fi" "Already connected to $ssid" -i "network-wireless"
+        exit 0
+    fi
+    
+    # Check if network requires a password
+    security=$(nmcli -t -f "SSID,SECURITY" device wifi list | grep "^$ssid:" | head -n 1 | cut -d: -f2)
+    
+    if [ -n "$security" ] && [ "$security" != "--" ]; then
+        password=$(rofi -dmenu -password -p "Enter password for $ssid" -theme-str 'window {width: 400px;}')
+        if [ -z "$password" ]; then
+            exit 0
+        fi
+        notify-send "Wi-Fi" "Connecting to $ssid..." -i "network-wireless"
+        if nmcli device wifi connect "$ssid" password "$password"; then
+            notify-send "Wi-Fi" "Connected successfully to $ssid" -i "network-wireless"
+        else
+            notify-send "Wi-Fi" "Failed to connect to $ssid" -i "network-wireless-disconnected"
+        fi
+    else
+        notify-send "Wi-Fi" "Connecting to $ssid..." -i "network-wireless"
+        if nmcli device wifi connect "$ssid"; then
+            notify-send "Wi-Fi" "Connected successfully to $ssid" -i "network-wireless"
+        else
+            notify-send "Wi-Fi" "Failed to connect to $ssid" -i "network-wireless-disconnected"
+        fi
+    fi
+fi

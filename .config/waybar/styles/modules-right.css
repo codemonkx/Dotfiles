@@ -1,0 +1,112 @@
+/*-----------------------------------------------------
+    Right Pills: Media, Connectivity, Hardware, Power
+-----------------------------------------------------*/
+
+#media-pill,
+#status-pill,
+#hardware-pill,
+#power-pill,
+#custom-media {
+	background-color: @main-bg;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 20px;
+	padding: 2px 10px;
+	margin: 4px 6px;
+
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/*--------------------
+    Status/Connectivity
+--------------------*/
+
+#custom-wallpaper,
+#network,
+#bluetooth,
+#custom-update {
+	padding: 0 8px;
+	margin: 0 2px;
+	border-radius: 15px;
+	transition: all 0.2s ease;
+}
+
+#custom-wallpaper {
+	color: @sky;
+}
+
+#network {
+	color: @teal;
+}
+
+#bluetooth {
+	color: @blue;
+}
+
+#custom-update {
+	color: @yellow;
+	padding: 0 8px 0 4px;
+}
+
+
+/*----------------
+    Media Pill
+----------------*/
+
+#custom-media {
+	background-color: @main-bg;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 20px;
+	padding: 2px 14px;
+	margin: 4px 6px;
+
+	color: @text;
+	transition: all 0.3s ease;
+}
+
+/* Hide the pill completely when no media is playing */
+#custom-media.stopped {
+	background-color: transparent;
+	border: none;
+	padding: 0;
+	margin: 0;
+	box-shadow: none;
+}
+
+/*------------
+    Volume
+------------*/
+
+#pulseaudio {
+	color: @sapphire;
+	padding: 0 8px;
+}
+
+/*----------------
+    Brightness
+----------------*/
+
+#backlight {
+	color: @yellow;
+	padding: 0 8px;
+}
+
+/*-------------
+    Battery
+-------------*/
+
+#battery {
+	color: @green;
+	padding: 0 8px;
+}
+
+/*----------------
+    Power Menu
+----------------*/
+
+#custom-power {
+	color: @red;
+	padding: 0 8px 0 4px;
+	transition: all 0.2s ease;
+}
+

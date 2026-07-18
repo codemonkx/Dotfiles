@@ -1,0 +1,59 @@
+/*-----------------------------------------------------
+    System States & Alerts
+-----------------------------------------------------*/
+
+/* Muted / Inactive states (subdued visibility instead of hard gray) */
+#idle_inhibitor.deactivated,
+#pulseaudio.output.muted,
+#pulseaudio.input.source-muted,
+#wireplumber.muted {
+	color: @overlay0;
+	opacity: 0.65;
+}
+
+#custom-media.paused {
+	opacity: 0.85;
+}
+
+/* Warnings (e.g. battery < 20%, high usage) */
+#memory.warning,
+#cpu.warning,
+#battery.warning {
+	color: @warning;
+	animation: warning-pulse 2s infinite alternate;
+}
+
+/* Critical (e.g. battery < 10%, high temp) */
+#temperature.critical,
+#memory.critical,
+#cpu.critical,
+#battery.critical {
+	color: @critical;
+	animation: critical-pulse 1s infinite alternate;
+}
+
+/* Charging State */
+#battery.charging {
+	color: @charging;
+}
+
+/* Animations for warnings and critical alerts */
+@keyframes warning-pulse {
+	from {
+		opacity: 0.8;
+	}
+	to {
+		opacity: 1;
+		text-shadow: 0 0 4px rgba(249, 226, 175, 0.4);
+	}
+}
+
+@keyframes critical-pulse {
+	from {
+		opacity: 0.6;
+	}
+	to {
+		opacity: 1;
+		text-shadow: 0 0 6px rgba(243, 139, 168, 0.6);
+	}
+}

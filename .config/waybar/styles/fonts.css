@@ -1,0 +1,19 @@
+* {
+	font-family: "JetBrainsMono Nerd Font Mono";
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#window label,
+#custom-media,
+tooltip label {
+	font-weight: 500;
+}
+
+#custom-distro {
+	font-size: 18px;
+}
+
+#custom-power {
+	font-size: 16px;
+}

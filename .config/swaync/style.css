@@ -1,0 +1,568 @@
+/* Premium macOS Sonoma / visionOS inspired stylesheet for SwayNC */
+
+@import "theme.css";
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "DejaVu Sans", sans-serif;
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, color 200ms ease;
+  color: @text-color;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+window {
+  background: transparent;
+}
+
+/* --- Control Center Panel (Glassmorphic Container with Dynamic Theme Sync) --- */
+.control-center {
+  background-color: @cc-bg;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  border-radius: 30px; /* 28-32px corner radius */
+  padding: 24px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 
+              0 1px 2px rgba(255, 255, 255, 0.08) inset;
+  margin: 12px;
+}
+
+.control-center .notifications-box {
+  background: transparent;
+}
+
+/* --- Clean Section Spacing (No borders, separated by whitespace) --- */
+.widget-title,
+.widget-buttons-grid,
+.widget-mpris,
+.widget-backlight,
+.widget-dnd {
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+/* --- Title/Header --- */
+.widget-title {
+  background: transparent;
+}
+.widget-title > label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: @text-color;
+  opacity: 0.9;
+}
+.widget-title > button {
+  background: @widget-bg;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  color: @text-color;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 26px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+.widget-title > button:hover {
+  background: @widget-bg-hover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+.widget-title > button:active {
+  background: @widget-bg-hover;
+}
+
+/* --- Quick Actions Grid (72x72 Tiles with Dynamic Theme Accents) --- */
+.widget-buttons-grid {
+  background: transparent;
+}
+.widget-buttons-grid flowbox {
+  background: transparent;
+  justify-content: space-between;
+}
+.widget-buttons-grid flowboxchild {
+  padding: 0;
+  margin: 4px;
+}
+.widget-buttons-grid flowboxchild > button {
+  background: @widget-bg;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 18px; /* Slightly rounder tiles */
+  color: @muted-text;
+  min-height: 72px;
+  min-width: 72px;
+  max-height: 72px;
+  max-width: 72px;
+  padding: 0px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, color 200ms ease;
+}
+.widget-buttons-grid flowboxchild > button label {
+  font-size: 20px; /* Larger centered icon since there's no text label */
+  font-weight: 500;
+  color: @muted-text;
+  margin: 0;
+  padding: 0;
+}
+/* Grid Button Hover State */
+.widget-buttons-grid flowboxchild > button:hover {
+  background: @widget-bg-hover;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+/* Grid Button Active State (Dynamic Gradient + Glow) */
+.widget-buttons-grid flowboxchild > button.toggle:checked {
+  background-image: linear-gradient(135deg, @accent 0%, @secondary-accent 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 14px alpha(@accent, 0.45), 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.widget-buttons-grid flowboxchild > button.toggle:checked label {
+  color: #FFFFFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.widget-buttons-grid flowboxchild > button.toggle:checked:hover {
+  background-image: linear-gradient(135deg, @secondary-accent 0%, @accent 100%);
+  box-shadow: 0 0 18px alpha(@accent, 0.6), 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Now Playing Section --- */
+.widget-mpris {
+  background: transparent;
+}
+.widget-mpris .widget-mpris-player {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.widget-mpris .widget-mpris-player .mpris-background {
+  opacity: 0;
+}
+.widget-mpris .widget-mpris-player .mpris-overlay {
+  background: transparent;
+  padding: 0;
+}
+.widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-album-art {
+  border-radius: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  min-width: 60px;
+  min-height: 60px;
+  max-width: 60px;
+  max-height: 60px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  margin-right: 16px;
+}
+.widget-mpris-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: @text-color;
+  padding: 0;
+  margin: 0;
+}
+.widget-mpris-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  color: @muted-text;
+  padding: 0;
+  margin: 2px 0 0 0;
+}
+/* Playback Controls (Apple Music Circle Style) */
+.widget-mpris-player button {
+  background: transparent;
+  border: none;
+  color: @text-color;
+  padding: 4px;
+  min-width: 32px;
+  min-height: 32px;
+  margin: 0 4px;
+}
+.widget-mpris-player button:hover {
+  background: @widget-bg-hover;
+  border-radius: 50%;
+  color: @text-color;
+}
+/* Middle Play/Pause Button highlighted */
+.widget-mpris-player button:nth-child(2) {
+  background: @widget-bg;
+  border-radius: 50%;
+  min-width: 36px;
+  min-height: 36px;
+}
+.widget-mpris-player button:nth-child(2):hover {
+  background: @widget-bg-hover;
+}
+.widget-mpris-player button:active {
+  background: @widget-bg-hover;
+}
+/* Slim Progress Bar with Hover Expansion */
+.widget-mpris scale {
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+.widget-mpris scale trough {
+  background: @widget-bg;
+  border-radius: 2px;
+  min-height: 4px;
+  transition: min-height 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.widget-mpris scale:hover trough {
+  min-height: 6px;
+}
+.widget-mpris scale highlight {
+  background: @accent;
+  border-radius: 2px;
+}
+.widget-mpris scale slider {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  min-width: 0;
+}
+.widget-mpris scale:hover slider {
+  background: @text-color;
+  border-radius: 50%;
+  min-height: 8px;
+  min-width: 8px;
+  margin: -1px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Volume & Brightness Sliders --- */
+.widget-volume {
+  background: transparent;
+  margin-bottom: 8px;
+  padding-bottom: 0px;
+}
+.widget-backlight {
+  background: transparent;
+}
+.widget-volume label,
+.widget-backlight label {
+  font-size: 14px;
+  color: @muted-text;
+  margin-right: 12px;
+  text-shadow: none;
+}
+.widget-volume scale,
+.widget-backlight scale {
+  padding: 4px 0;
+}
+.widget-volume scale trough,
+.widget-backlight scale trough {
+  background: @widget-bg;
+  border-radius: 3px;
+  min-height: 6px;
+  transition: min-height 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Scale track expands slightly on hover */
+.widget-volume scale:hover trough,
+.widget-backlight scale:hover trough {
+  min-height: 8px;
+  background: @widget-bg-hover;
+}
+.widget-volume scale highlight,
+.widget-backlight scale highlight {
+  background: @accent;
+  border-radius: 3px;
+}
+.widget-volume scale slider,
+.widget-backlight scale slider {
+  background: @text-color;
+  border-radius: 50%;
+  min-height: 14px;
+  min-width: 14px;
+  margin: -4px 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+/* Slider hover styling (remove scale transform) */
+
+/* --- Focus Mode Switch (Simple Row with Apple Blue Pill Switch) --- */
+.widget-dnd {
+  background: transparent;
+  padding: 4px 0 16px 0;
+}
+.widget-dnd label {
+  font-size: 13px;
+  font-weight: 600;
+  color: @text-color;
+}
+.widget-dnd switch {
+  background: @widget-bg;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  border-radius: 14px;
+  min-height: 20px;
+  min-width: 36px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+}
+.widget-dnd switch slider {
+  background: @text-color;
+  border-radius: 50%;
+  min-height: 14px;
+  min-width: 14px;
+  margin: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+.widget-dnd switch:checked {
+  background-image: linear-gradient(135deg, @accent 0%, @secondary-accent 100%);
+  border-color: @accent;
+  box-shadow: 0 0 8px alpha(@accent, 0.3);
+}
+
+/* --- Notifications Container & Caught Up Empty State --- */
+.control-center-list {
+  background: transparent;
+}
+.control-center .control-center-list-placeholder {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: @muted-text;
+  text-align: center;
+  background: @widget-bg;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin: 4px 0 0 0;
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.02) inset;
+}
+
+/* --- Active Notifications (visionOS Floating Glass Look) --- */
+.notification-row,
+row,
+listrow,
+.notification-row:hover,
+.notification-row:focus,
+.notification-row:selected,
+row:hover,
+row:focus,
+row:selected,
+listrow:hover,
+listrow:focus,
+listrow:selected {
+  outline: none;
+  background: transparent;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification-row .notification-background {
+  padding: 6px 0;
+  background: transparent;
+  background-color: transparent;
+}
+
+.notification-row .notification-background .notification {
+  background-color: rgba(15, 15, 20, 0.45);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px; /* Rounder visionOS style */
+  padding: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Disable any background hover style on the notification default action button in all containers */
+.notification-default-action,
+.notification-default-action:hover,
+.notification-default-action:focus,
+.notification-default-action:active,
+.notification-row .notification-background .notification .notification-default-action,
+.notification-row .notification-background .notification .notification-default-action:hover,
+.notification-row .notification-background .notification .notification-default-action:focus,
+.notification-row .notification-background .notification .notification-default-action:active,
+.control-center .control-center-list .notification .notification-default-action:hover {
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+/* Disable any background hover style on the notification action button container in all containers */
+.notification-action:hover,
+.control-center .control-center-list .notification .notification-action:hover {
+  background: transparent;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* Disable hover effects on grouped stacked notifications */
+.notification-group.collapsed:hover .notification-row:not(:only-child) .notification {
+  background-color: @widget-bg;
+}
+
+/* Close Button (X) */
+.close-button {
+  background: @widget-bg;
+  color: @text-color;
+  border-radius: 50%;
+  border: none;
+  min-width: 20px;
+  min-height: 20px;
+  font-size: 9px;
+  margin-top: 4px;
+  margin-right: 4px;
+}
+.close-button:hover {
+  background: @red-color;
+  color: #FFFFFF;
+}
+
+/* Notification Contents */
+.notification-row .notification-background .notification .notification-content .app-icon {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 4px 10px 4px 0;
+}
+.notification-row .notification-background .notification .notification-content .image {
+  border-radius: 10px;
+  margin: 4px 8px;
+}
+.notification-row .notification-background .notification .notification-content .text-box {
+  padding: 0;
+}
+.notification-row .notification-background .notification .notification-content .text-box .summary,
+.notification-row .notification-background .notification:hover .summary,
+.notification-row .notification-background .notification .summary:hover {
+  font-size: 13px;
+  font-weight: 600;
+  color: @text-color;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: none;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
+}
+.notification-row .notification-background .notification .notification-content .text-box .body,
+.notification-row .notification-background .notification:hover .body,
+.notification-row .notification-background .notification .body:hover {
+  font-size: 12px;
+  font-weight: 400;
+  color: @muted-text;
+  margin-top: 2px;
+  line-height: 1.4;
+  text-shadow: none;
+  transition: none;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.notification-row .notification-background .notification .notification-content .text-box .time,
+.notification-row .notification-background .notification:hover .time,
+.notification-row .notification-background .notification .time:hover {
+  font-size: 10px;
+  color: @muted-text;
+  opacity: 0.6;
+  text-shadow: none;
+  transition: none;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.notification-row .notification-background .notification:hover label,
+.notification-row .notification-background .notification label:hover {
+  background: transparent;
+  text-decoration: none;
+  transition: none;
+}
+
+/* Disable hover effects on the card itself */
+.notification-row .notification-background .notification:hover,
+.notification-row .notification-background .notification:focus,
+.notification-row .notification-background .notification:selected {
+  background-color: rgba(15, 15, 20, 0.45);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 
+              inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Action Buttons inside Notifications */
+.notification-row .notification-background .notification .notification-action {
+  margin-top: 10px;
+  padding: 0;
+}
+.notification-row .notification-background .notification .notification-action > button {
+  background: @widget-bg;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  color: @text-color;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  min-height: 28px;
+}
+.notification-row .notification-background .notification .notification-action > button:hover {
+  background: @widget-bg-hover;
+}
+
+/* Inline Reply widget */
+.notification-row .notification-background .notification .notification-content .inline-reply {
+  margin-top: 10px;
+}
+.notification-row .notification-background .notification .notification-content .inline-reply .inline-reply-entry {
+  background: rgba(0, 0, 0, 0.2);
+  color: @text-color;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.notification-row .notification-background .notification .notification-content .inline-reply .inline-reply-button {
+  background-image: linear-gradient(135deg, @accent 0%, @secondary-accent 100%);
+  color: #FFFFFF;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 6px;
+  box-shadow: 0 2px 6px alpha(@accent, 0.3);
+}
+.notification-row .notification-background .notification .notification-content .inline-reply .inline-reply-button:hover {
+  background-image: linear-gradient(135deg, @secondary-accent 0%, @accent 100%);
+}
+.notification-row .notification-background .notification .notification-content .inline-reply .inline-reply-button:disabled {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+/* --- Scrollbar Customization --- */
+scrollbar {
+  background: transparent;
+}
+scrollbar trough {
+  background: transparent;
+}
+scrollbar slider {
+  background: alpha(@text-color, 0.08);
+  border-radius: 6px;
+  min-width: 4px;
+  min-height: 40px;
+}
+scrollbar slider:hover {
+  background: alpha(@text-color, 0.2);
+}

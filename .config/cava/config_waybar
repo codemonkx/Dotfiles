@@ -1,0 +1,17 @@
+[general]
+bars = 12
+framerate = 60
+
+[input]
+method = pipewire
+source = auto
+
+[output]
+method = raw
+data_format = ascii
+ascii_max_range = 7
+bar_delimiter = 59
+
+[smoothing]
+monstercat = 1
+noise_reduction = 0.77
