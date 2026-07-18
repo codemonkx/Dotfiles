@@ -169,7 +169,11 @@ link_config "$SCRIPT_DIR/.bashrc" "$HOME/.bashrc"
 link_config "$SCRIPT_DIR/.config/starship.toml" "$CONFIG_DIR/starship.toml"
 link_config "$SCRIPT_DIR/.config/mimeapps.list" "$CONFIG_DIR/mimeapps.list"
 
-# Ensure powermenu script is executable
+# Personalize neofetch config with user's actual home path
+if [ -f "$CONFIG_DIR/neofetch/config.conf" ]; then
+    sed -i "s|/home/nx02|${HOME}|g" "$CONFIG_DIR/neofetch/config.conf"
+fi
+
 if [ -f "$CONFIG_DIR/rofi/powermenu/type-4/powermenu.sh" ]; then
     chmod +x "$CONFIG_DIR/rofi/powermenu/type-4/powermenu.sh"
 fi
