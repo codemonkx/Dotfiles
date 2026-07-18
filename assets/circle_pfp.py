@@ -29,15 +29,16 @@ def crop_to_circle_with_border(src_path, dest_path, border_color="#8e00d1", bord
     output.paste(img, (0, 0), mask=mask)
     
     # Draw circular outline border
-    draw_border = ImageDraw.Draw(output)
-    draw_border.ellipse((margin, margin, output_size[0] - margin, output_size[1] - margin), 
-                         outline=border_color, width=border_width)
+    if border_width > 0:
+        draw_border = ImageDraw.Draw(output)
+        draw_border.ellipse((margin, margin, output_size[0] - margin, output_size[1] - margin), 
+                             outline=border_color, width=border_width)
     
     # Save the output PNG
     output.save(dest_path, "PNG")
-    print(f"Successfully generated circular PFP with border at {dest_path}")
+    print(f"Successfully generated circular PFP at {dest_path}")
 
 if __name__ == "__main__":
     src = "/home/nx02/assets/pfp_original.png"
     dest = "/home/nx02/assets/pfp.png"
-    crop_to_circle_with_border(src, dest, border_color="#8e00d1", border_width=12)
+    crop_to_circle_with_border(src, dest, border_color="#8e00d1", border_width=0)
