@@ -24,6 +24,14 @@
 !.config/rofi/**
 !.config/cava/
 !.config/cava/**
+!.config/neofetch/
+!.config/neofetch/**
+!.config/Wallpaper/
+!.config/Wallpaper/**
+!.config/sddm/
+!.config/sddm/**
 !.config/starship.toml
 !.config/mimeapps.list
 !.config/zshrc
+!install.sh
+!README.md
